@@ -15,7 +15,7 @@ int main()
     BoardSounds boardSounds;
 
     Board board(window, textureManager, boardSounds, SQUARE_LENGTH);
-    board.setPosition("r1b1k2r/1ppp1pQp/p4p2/2b1pN2/2B1Pn2/3P3P/PPq2PP1/RN3RK1 b - - 0 1"); //FenProcessor::STARTING_FEN
+    board.setPosition(FenProcessor::STARTING_FEN);
 
     while (window.isOpen()) {
         window.clear(sf::Color::Black);
