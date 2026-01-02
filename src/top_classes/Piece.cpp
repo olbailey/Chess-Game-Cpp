@@ -70,7 +70,8 @@ std::vector<Move> Piece::getPossibleMoves(const std::vector<MoveType> &moveTypes
 
 bool Piece::hasMove(const Move &possibleMove) const {
     for (const Move &move : moves) {
-        if (move.type != MoveType::Friendly && move.coordEqualTo(possibleMove)) return true;
+        if (move.type != MoveType::Friendly && move.type != MoveType::None
+            && move.coordEqualTo(possibleMove)) return true;
     }
     return false;
 }

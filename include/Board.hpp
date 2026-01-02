@@ -58,7 +58,7 @@ public:
     float squareSize;
 
     // AI
-    static constexpr bool aiActivated = true; // TODO add element to change this
+    static constexpr bool aiActivated = false; // TODO add element to change this
     static constexpr int aiDepth = 3;
     static constexpr auto aiColour = PieceColour::Black;
 
