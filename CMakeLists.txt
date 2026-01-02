@@ -14,7 +14,8 @@ add_executable(Chess
         src/main.cpp
         src/top_classes/Board.cpp
         src/top_classes/Board_SelectionLogic.cpp
-        src/top_classes/Board_SimpleMethods.cpp
+        src/top_classes/Board_GeneralMethods.cpp
+        src/top_classes/Board_Accessors.cpp
         src/top_classes/Piece.cpp
         src/top_classes/Piece_LaserMovement.cpp
         src/top_classes/Piece_SwitchCases.cpp

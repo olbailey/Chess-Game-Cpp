@@ -4,7 +4,6 @@
 
 #include "Board.hpp"
 
-/* --- Getter Methods --- */
 Position Board::getMousePos() const {
     return Position(sf::Mouse::getPosition(window));
 }
@@ -51,7 +50,6 @@ void Board::setSquare(const char pieceLetter, const Move &move) {
     grid[move.x][move.y] = Piece::setPiece(pieceLetter, Move({move.x, move.y}));
 }
 
-
 Piece *Board::getPiece(const int x, const int y) {return grid[x][y].get();}
 Piece *Board::getPiece(const int x, const int y) const {return grid[x][y].get();}
 Piece *Board::getPiece(const Move &move) {
@@ -60,33 +58,6 @@ Piece *Board::getPiece(const Move &move) {
 Piece *Board::getPiece(const Move &move) const {
     return grid[move.x][move.y].get();
 }
-
-/* --- Small Stuff --- */
-void Board::calculateMoves(const bool simulation) const {
-    chessLogic->calculateMoves(simulation);
-}
-
-void Board::setPosition(const std::string &fen) const {
-    fenProcessor->setBoard(fen);
-}
-
-void Board::draw() const {
-    boardDisplay->all();
-}
-
-void Board::print() const {
-    boardDisplay->printBoard();
-}
-
-std::string Board::getFen() const {
-    return fenProcessor->boardToFen();
-}
-
-
-void Board::makeMove(Piece *piece, const Move &moveToMake) const {
-    chessLogic->makeMove(piece, moveToMake);
-}
-
 
 BoardIterator Board::begin() {return {this, 0, 0};}
 BoardIterator Board::end() {return {this, 8, 0};}

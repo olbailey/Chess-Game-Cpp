@@ -8,6 +8,7 @@
 #include "Board.hpp"
 #include "Piece.hpp"
 
+const sf::Color BoardDisplay::BLACK = sf::Color(0, 0, 0);
 const sf::Color BoardDisplay::GREY = sf::Color(20, 20, 20, 50);
 const sf::Color BoardDisplay::PEACH = sf::Color(240, 217, 181);
 const sf::Color BoardDisplay::BROWN = sf::Color(181, 136, 99);
@@ -256,4 +257,29 @@ void BoardDisplay::setFont() {
     } else {
         std::cerr << "Error loading font file! Make sure 'arial.ttf' is present." << std::endl;
     }
+}
+
+void BoardDisplay::displayGameEndMessage() const {
+    sf::Text text;
+
+    text.setFont(*fontPtr);
+    text.setCharacterSize(60);
+
+    text.setFillColor(BLACK);
+
+    switch (board_.winnerValue) {
+        case Winner::White :
+            text.setString("White Won!");
+            break;
+        case Winner::Black :
+            text.setString("Black Won!");
+            break;
+        case Winner::Draw :
+            text.setString("Draw!");
+        default: ;
+    }
+
+    const sf::FloatRect bounds = text.getLocalBounds();
+    text.setPosition(board_.squareSize * 4 - bounds.width / 2, board_.squareSize * 4 - bounds.height);
+    board_.window.draw(text);
 }

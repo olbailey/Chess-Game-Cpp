@@ -13,6 +13,7 @@
 class Board;
 
 class BoardDisplay {
+    static const sf::Color BLACK;
     static const sf::Color GREY;
     static const sf::Color PEACH;
     static const sf::Color BROWN;
@@ -36,6 +37,8 @@ public:
 
     void printBoard() const;
     static void printBoard(const Board &board);
+
+    void displayGameEndMessage() const;
 
 private:
     void drawPattern() const;
@@ -62,7 +65,6 @@ private:
                            const sf::Color &circleColour) const;
 
     void setFont();
-
 };
 
 #endif //BOARDDISPLAY_H

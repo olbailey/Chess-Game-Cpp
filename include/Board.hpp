@@ -28,6 +28,10 @@ enum class PlayerTurn {
     White, Black
 };
 
+enum class Winner {
+    White, Black, Draw, notFinished
+};
+
 class Board {
     std::unique_ptr<BoardDisplay> boardDisplay;
     std::unique_ptr<FenProcessor> fenProcessor;
@@ -56,6 +60,7 @@ public:
 
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> grid;
     float squareSize;
+    Winner winnerValue = Winner::notFinished;
 
     // AI
     static constexpr bool aiActivated = false; // TODO add element to change this
@@ -98,6 +103,8 @@ private:
     void handleEvents();
 
     void startAiThread();
+
+    void aiManagement();
 
 public:
 
@@ -142,6 +149,12 @@ public:
     void makeMove(Piece *piece, const Move &moveToMake) const;
 
     void gameLoop();
+
+    bool isCheckmate(bool staleMateFound = false) const;
+
+    bool isStalemate() const;
+
+    void isGameFinished();
 };
 
 

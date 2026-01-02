@@ -63,42 +63,41 @@ void Board::handleEvents() {
 }
 
 void Board::gameLoop() {
-    if (moveMade) {
+    if (winnerValue != Winner::notFinished) {
+        boardDisplay->displayGameEndMessage();
+
+    } else if (moveMade) {
         swapPlayerTurn();
         chessLogic->calculateMoves(false);
         moveMade = false;
 
-        if (isAiThinking) {
-            isAiThinking = false;
-
-            if (aiThread.joinable())
-                aiThread.join();
-
-        } else if (aiActivated && aiColour == playerTurn) {
-            isAiThinking = true;
-            aiThread = std::thread(&Board::startAiThread, this);
-        }
+        aiManagement();
+    } else {
+        isGameFinished();
     }
 
     handleEvents();
     checkIfDragged();
-}
 
-void Board::checkForCheck(const Move &startCoord, const Move &endCoord) {
-    if (checkLocation != nullptr && checkLocation->coordEqualTo(endCoord)) return;
-
-    const Piece *movingPiece = getPiece(startCoord);
-    const Piece *attackedPiece = getPiece(endCoord);
-
-    if (movingPiece == nullptr || attackedPiece == nullptr) return;
-    if (attackedPiece->getPieceType() != PieceType::King) return;
-    if (movingPiece->getPieceColour() == attackedPiece->getPieceColour()) return;
-
-    checkLocation = std::make_unique<Move>(endCoord);
 }
 
 void Board::startAiThread() {
     const AIMove &aiMove = aiCalculator->pickMove(*this);
     makeMove(getPiece(aiMove.piecePosition_), aiMove.moveToMake_);
     moveMade = true;
+}
+
+void Board::aiManagement() {
+    if (!aiActivated) return;
+
+    if (isAiThinking) {
+        isAiThinking = false;
+
+        if (aiThread.joinable())
+            aiThread.join();
+
+    } else if (aiColour == playerTurn) {
+        isAiThinking = true;
+        aiThread = std::thread(&Board::startAiThread, this);
+    }
 }
