@@ -56,20 +56,14 @@ target_include_directories(Chess PRIVATE
 )
 
 # ---SFML .dll File inclusion ---
-file(GLOB SFML_LIBS_DEBUG "${MAIN_SFML_DIR}/bin/*-d-2.dll")
-file(GLOB SFML_LIBS_RELEASE "${MAIN_SFML_DIR}/bin/*-2.dll")
+if (WIN32)
+    file(GLOB SFML_DLLS
+            "${MAIN_SFML_DIR}/bin/*.dll"
+    )
 
-foreach(SFML_LIB IN LISTS SFML_LIBS_DEBUG SFML_LIBS_RELEASE)
-    # Check if the file exists before attempting to install
-    if(EXISTS "${SFML_LIB}")
-        get_filename_component(LIB_NAME "${SFML_LIB}" NAME)
-        install(FILES "${SFML_LIB}" DESTINATION "${CMAKE_BINARY_DIR}/bin")
-    endif()
-endforeach()
-
-# --- Copy OpenAL DLL ---
-add_custom_command(TARGET Chess POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${MAIN_SFML_DIR}/bin/openal32.dll"
-        $<TARGET_FILE_DIR:Chess>
-)
+    add_custom_command(TARGET Chess POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${SFML_DLLS}
+            $<TARGET_FILE_DIR:Chess>
+    )
+endif()
