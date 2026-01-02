@@ -12,8 +12,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!", sf::Style::Close);
 
     const TextureManager textureManager;
+    BoardSounds boardSounds;
 
-    Board board(window, textureManager, SQUARE_LENGTH);
+    Board board(window, textureManager, boardSounds, SQUARE_LENGTH);
     board.setPosition("r1b1k2r/1ppp1pQp/p4p2/2b1pN2/2B1Pn2/3P3P/PPq2PP1/RN3RK1 b - - 0 1"); //FenProcessor::STARTING_FEN
 
     while (window.isOpen()) {

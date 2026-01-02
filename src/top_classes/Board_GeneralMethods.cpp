@@ -25,8 +25,8 @@ std::string Board::getFen() const {
     return fenProcessor->boardToFen();
 }
 
-void Board::makeMove(Piece *piece, const Move &moveToMake) const {
-    chessLogic->makeMove(piece, moveToMake);
+void Board::makeMove(Piece *piece, const Move &moveToMake, const bool simulation) const {
+    chessLogic->makeMove(piece, moveToMake, simulation);
 }
 
 void Board::checkForCheck(const Move &startCoord, const Move &endCoord) {
@@ -78,5 +78,6 @@ void Board::isGameFinished() {
         } else {
             winnerValue = Winner::Draw;
         }
+        boardSounds.requestSound("game-end");
     }
 }

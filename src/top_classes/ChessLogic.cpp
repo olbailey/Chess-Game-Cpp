@@ -2,7 +2,7 @@
 // Created by olbai on 04/07/2025.
 //
 
-#include "helpers/ChessLogic.hpp"
+#include "ChessLogic.hpp"
 
 #include "Board.hpp"
 
@@ -26,7 +26,7 @@ void ChessLogic::calculateMoves(const bool simulation) const {
             piecePtr->removeIllegalMoves(board_);
 }
 
-void ChessLogic::makeMove(Piece *piece, const Move &moveToMake) const {
+void ChessLogic::makeMove(Piece *piece, const Move &moveToMake, const bool simulation) const {
     moveMadeLogic(*piece, moveToMake);
 
     const Move currentPosition = Move::copy(piece->getPiecePosition());
@@ -46,6 +46,8 @@ void ChessLogic::makeMove(Piece *piece, const Move &moveToMake) const {
             const Piece &rookTemp = board_.popSquare(Move({currentPosition.x, 7}));
             board_.setSquare(rookTemp, Move({currentPosition.x, moveToMake.y - 1}));
         }
+        if (!simulation)
+            board_.boardSounds.requestSound("castle");
         return;
     }
 
@@ -53,6 +55,8 @@ void ChessLogic::makeMove(Piece *piece, const Move &moveToMake) const {
         const Piece& pawnTemp = board_.popSquare(currentPosition);
         board_.setSquare(pawnTemp, moveToMake);
         board_.popSquare(Move({currentPosition.x, moveToMake.y}));
+        if (!simulation)
+            board_.boardSounds.requestSound("move");
         return;
     }
 
@@ -60,6 +64,8 @@ void ChessLogic::makeMove(Piece *piece, const Move &moveToMake) const {
         board_.setSquare(Piece::getPawnPromotionLetter(moveToMake.type, piece->getPieceColour()), moveToMake);
         board_.popSquare(currentPosition);
         board_.pawnUpgradedPosition.reset();
+        if (!simulation)
+            board_.boardSounds.requestSound("promote");
         return;
     }
 
@@ -67,6 +73,12 @@ void ChessLogic::makeMove(Piece *piece, const Move &moveToMake) const {
 
     const Piece& pieceTemp = board_.popSquare(currentPosition);
     board_.setSquare(pieceTemp, moveToMake);
+    if (!simulation) {
+        if (moveToMake.type == MoveType::Attacking)
+            board_.boardSounds.requestSound("capture");
+        else
+            board_.boardSounds.requestSound("move");
+    }
 }
 
 bool ChessLogic::illegalMove(Board board, const Move &startCoord, const Move &moveToMake) {
@@ -101,7 +113,7 @@ bool ChessLogic::illegalMove(Board board, const Move &startCoord, const Move &mo
         attackedPiece != nullptr && moveType == MoveType::Friendly // because there is no point in that obvs
             && attackedPiece->getPieceType() == PieceType::King) return true;
 
-    board.makeMove(attackingPiece, moveToMake);
+    board.makeMove(attackingPiece, moveToMake, true);
 
     board.calculateMoves(true);
 

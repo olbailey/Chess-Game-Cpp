@@ -11,7 +11,7 @@
 #include "pieces/Queen.hpp"
 #include "pieces/King.hpp"
 
-#include "../../include/helpers/TextureManager.hpp"
+#include "helpers/TextureManager.hpp"
 
 #include <iostream>
 #include <memory>

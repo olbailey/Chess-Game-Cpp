@@ -11,7 +11,7 @@
 #include "helpers/TextureManager.hpp"
 #include "helpers/BoardDisplay.hpp"
 #include "helpers/FenProcessor.hpp"
-#include "helpers/ChessLogic.hpp"
+#include "ChessLogic.hpp"
 #include "helpers/BoardIterator.hpp"
 #include "helpers/BoardConstIterator.hpp"
 #include "ai_classes/AICalculator.hpp"
@@ -23,6 +23,8 @@
 
 #include <thread>
 #include <atomic>
+
+#include "helpers/BoardSounds.hpp"
 
 enum class PlayerTurn {
     White, Black
@@ -44,10 +46,6 @@ class Board {
     bool firstRun = true;
     std::atomic<bool> moveMade = true;
 
-    // Debugging TODO remove
-
-    const bool ignorePLayerTurn = false;
-
     // Ai threads
     std::thread aiThread;
     std::atomic<bool> isAiThinking;
@@ -57,6 +55,7 @@ public:
 
     sf::RenderWindow& window;
     const TextureManager& textureManager;
+    BoardSounds& boardSounds;
 
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> grid;
     float squareSize;
@@ -81,7 +80,7 @@ public:
     std::unique_ptr<Position> clickPosition;
     std::unique_ptr<std::array<Move, 2>> moveJustMade;
 
-    Board(sf::RenderWindow& window, const TextureManager& textureManager, float squareSize);
+    Board(sf::RenderWindow& window, const TextureManager& textureManager, BoardSounds& boardSounds, float squareSize);
 
     Board(const Board &other);
 
@@ -146,7 +145,7 @@ public:
 
     std::string getFen() const;
 
-    void makeMove(Piece *piece, const Move &moveToMake) const;
+    void makeMove(Piece *piece, const Move &moveToMake, bool simulation = false) const;
 
     void gameLoop();
 

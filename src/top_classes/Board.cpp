@@ -7,17 +7,17 @@
 #include "Board.hpp"
 #include "helpers/TextureManager.hpp"
 
-Board::Board(sf::RenderWindow& window, const TextureManager& textureManager, const float squareSize)
+Board::Board(sf::RenderWindow& window, const TextureManager& textureManager, BoardSounds& boardSounds, const float squareSize)
     : boardDisplay(std::make_unique<BoardDisplay>(*this)),
-        fenProcessor(std::make_unique<FenProcessor>(*this)),
-        chessLogic(std::make_unique<ChessLogic>(*this)),
-        aiCalculator(std::make_unique<AICalculator>(aiDepth, aiColour)),
-        window(window), textureManager(textureManager), squareSize(squareSize){}
+      fenProcessor(std::make_unique<FenProcessor>(*this)),
+      chessLogic(std::make_unique<ChessLogic>(*this)),
+      aiCalculator(std::make_unique<AICalculator>(aiDepth, aiColour)),
+      window(window), textureManager(textureManager), boardSounds(boardSounds), squareSize(squareSize) {
+}
 
 Board::Board(const Board &other)
     : chessLogic(std::make_unique<ChessLogic>(*this)),
-        window(other.window), textureManager(other.textureManager), squareSize(other.squareSize){
-
+      window(other.window), textureManager(other.textureManager), boardSounds(other.boardSounds), squareSize(other.squareSize) {
     for (int i = 0; i < 8; ++i)
         for (int j = 0; j < 8; ++j)
             if (const Piece *piecePtr = other.getPiece(i, j); piecePtr != nullptr) {
@@ -70,6 +70,9 @@ void Board::gameLoop() {
         swapPlayerTurn();
         chessLogic->calculateMoves(false);
         moveMade = false;
+        if (checkLocation != nullptr)
+            boardSounds.requestSound("check");
+
 
         aiManagement();
     } else {
@@ -78,7 +81,7 @@ void Board::gameLoop() {
 
     handleEvents();
     checkIfDragged();
-
+    boardSounds.update();
 }
 
 void Board::startAiThread() {

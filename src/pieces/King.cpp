@@ -2,8 +2,6 @@
 // Created by olbai on 30/06/2025.
 //
 
-#include "helpers/ChessLogic.hpp"
-
 #include "pieces/King.hpp"
 
 #include <array>

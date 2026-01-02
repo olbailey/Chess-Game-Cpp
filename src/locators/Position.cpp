@@ -2,8 +2,8 @@
 // Created by Oliver Bailey on 05/07/2025.
 //
 
-#include "../../include/locators/Position.hpp"
-#include "../../include/locators/Move.hpp"
+#include "locators/Position.hpp"
+#include "locators/Move.hpp"
 #include <cmath>
 
 Position::Position(const sf::Vector2i posToConvert)

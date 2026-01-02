@@ -2,7 +2,7 @@
 // Created by olbai on 23/07/2025.
 //
 
-#include "helpers/ChessLogic.hpp"
+#include "ChessLogic.hpp"
 
 #include "Board.hpp"
 

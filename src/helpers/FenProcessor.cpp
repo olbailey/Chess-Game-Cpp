@@ -6,7 +6,7 @@
 
 #include "Board.hpp"
 #include "Piece.hpp"
-#include "helpers/ChessLogic.hpp"
+#include "ChessLogic.hpp"
 
 #include "Pieces/King.hpp"
 #include "Pieces/Rook.hpp"

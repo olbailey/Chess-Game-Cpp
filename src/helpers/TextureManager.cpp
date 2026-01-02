@@ -2,7 +2,7 @@
 // Created by olbai on 02/07/2025.
 //
 
-#include "../../include/helpers/TextureManager.hpp"
+#include "helpers/TextureManager.hpp"
 
 const std::array<std::string, 12> TextureManager::chessPieceIds = {
     "Chess_plt60", "Chess_nlt60", "Chess_blt60",

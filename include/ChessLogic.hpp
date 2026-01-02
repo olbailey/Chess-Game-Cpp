@@ -18,7 +18,7 @@ public:
 
     void calculateMoves(bool simulation) const;
 
-    void makeMove(Piece *piece, const Move &moveToMake) const;
+    void makeMove(Piece *piece, const Move &moveToMake, bool simulation = false) const;
 
     bool validMove(const Move &pieceBeingMoved, const Move &placeMovedTo);
 

@@ -19,7 +19,7 @@ void Board::leftMousePressedLogic() {
     }
 
     if (pieceSelected == nullptr) {
-        if (possiblePiece == nullptr || (!ignorePLayerTurn && possiblePiece->getPieceColour() != playerTurn)) {
+        if (possiblePiece == nullptr || possiblePiece->getPieceColour() != playerTurn) {
             resetSelectionLogic();
             return; // if a piece who does not belong to the current player is clicked
         }

@@ -19,11 +19,14 @@ add_executable(Chess
         src/top_classes/Piece.cpp
         src/top_classes/Piece_LaserMovement.cpp
         src/top_classes/Piece_SwitchCases.cpp
+        src/top_classes/ChessLogic.cpp
+        src/top_classes/ChessLogic_HelperMethods.cpp
         src/helpers/TextureManager.cpp
         src/helpers/FenProcessor.cpp
         src/helpers/BoardDisplay.cpp
-        src/helpers/ChessLogic.cpp
-        src/helpers/ChessLogic_HelperMethods.cpp
+        src/helpers/BoardIterator.cpp
+        src/helpers/BoardConstIterator.cpp
+        src/helpers/BoardSounds.cpp
         src/pieces/Pawn.cpp
         src/pieces/Bishop.cpp
         src/pieces/Rook.cpp
@@ -33,15 +36,10 @@ add_executable(Chess
         src/locators/MovementPath.cpp
         src/locators/Move.cpp
         src/locators/Position.cpp
-        src/helpers/BoardIterator.cpp
-        src/helpers/BoardConstIterator.cpp
         src/ai_classes/AICalculator.cpp
         src/ai_classes/ScoreMapper.cpp
-        include/ai_classes/ScoreMapper.hpp
         src/ai_classes/ScoreMap.cpp
-        include/ai_classes/ScoreMap.hpp
         src/ai_classes/AiMove.cpp
-        include/ai_classes/AiMove.hpp
 )
 
 # --- SFML Linking ---
@@ -68,3 +66,10 @@ foreach(SFML_LIB IN LISTS SFML_LIBS_DEBUG SFML_LIBS_RELEASE)
         install(FILES "${SFML_LIB}" DESTINATION "${CMAKE_BINARY_DIR}/bin")
     endif()
 endforeach()
+
+# --- Copy OpenAL DLL ---
+add_custom_command(TARGET Chess POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${MAIN_SFML_DIR}/bin/openal32.dll"
+        $<TARGET_FILE_DIR:Chess>
+)
